@@ -107,28 +107,29 @@ static int	parse_decimal_part(char *str, int i, double *nb, int *has_digit)
 /* ft_atof:
 *	Converts a string into a float (decimal number). Used to parse
 *	Julia starting values given as program arguments.
-*	Returns the converted double, or -42 in case of error (Julia accepts
-*	values between 2.0 and -2.0 only)
+*	Returns 1 on success and stores the converted value in nb.
+*	Returns 0 in case of parsing error.
 */
-double	ft_atof(char *str)
+int	ft_atof(char *str, double *nb)
 {
 	int		i;
 	int		is_neg;
 	int		has_digit;
-	double	nb;
+	double	value;
 
-	nb = 0;
+	value = 0;
 	is_neg = 1;
 	has_digit = 0;
 	i = skip_space_sign(str, &is_neg);
 	while (str[i] && ft_isdigit(str[i]))
 	{
-		nb = (nb * 10.0) + (str[i] - '0');
+		value = (value * 10.0) + (str[i] - '0');
 		has_digit = 1;
 		i++;
 	}
-	i = parse_decimal_part(str, i, &nb, &has_digit);
+	i = parse_decimal_part(str, i, &value, &has_digit);
 	if (!has_digit || str[i] != '\0')
-		return (-42);
-	return (nb * is_neg);
+		return (0);
+	*nb = value * is_neg;
+	return (1);
 }

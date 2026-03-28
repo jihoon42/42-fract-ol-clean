@@ -76,7 +76,7 @@ void	set_color_mono(t_fractol *f, int color)
 *	to provide more than 4 colors by casting a larger array and specifying
 *	how many colors are included.
 */
-void	set_color_multiple(t_fractol *f, int colors[4], int n)
+void	set_color_multiple(t_fractol *f, int *colors, int n)
 {
 	int		i;
 	int		j;

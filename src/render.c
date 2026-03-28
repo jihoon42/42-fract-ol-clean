@@ -26,10 +26,13 @@
 */
 static void	set_pixel_color(t_fractol *f, int x, int y, int color)
 {
-	f->buf[x * 4 + y * f->line_bytes] = color;
-	f->buf[x * 4 + y * f->line_bytes + 1] = color >> 8;
-	f->buf[x * 4 + y * f->line_bytes + 2] = color >> 16;
-	f->buf[x * 4 + y * f->line_bytes + 3] = color >> 24;
+	unsigned char	*buf;
+
+	buf = (unsigned char *)f->buf;
+	buf[x * 4 + y * f->line_bytes] = color;
+	buf[x * 4 + y * f->line_bytes + 1] = color >> 8;
+	buf[x * 4 + y * f->line_bytes + 2] = color >> 16;
+	buf[x * 4 + y * f->line_bytes + 3] = color >> 24;
 }
 
 /* calculate_fractal:
@@ -54,6 +57,21 @@ static int	calculate_fractal(t_fractol *f, double pr, double pi)
 	return (nb_iter);
 }
 
+static void	render_line(t_fractol *f, int y, double pi, double step_r)
+{
+	int		x;
+	int		nb_iter;
+	double	pr;
+
+	x = -1;
+	while (++x < WIDTH)
+	{
+		pr = f->min_r + (double)x * step_r;
+		nb_iter = calculate_fractal(f, pr, pi);
+		set_pixel_color(f, x, y, f->palette[nb_iter]);
+	}
+}
+
 /* render:
 *	Iterates through each pixel of the window, translates the pixel's
 *	coordinates into a complex number to be able to calculate if that number
@@ -65,24 +83,20 @@ static int	calculate_fractal(t_fractol *f, double pr, double pi)
 */
 void	render(t_fractol *f)
 {
-	int		x;
 	int		y;
-	double	pr;
 	double	pi;
-	int		nb_iter;
+	double	step_r;
+	double	step_i;
 
 	mlx_clear_window(f->mlx, f->win);
+	step_r = (f->max_r - f->min_r) / WIDTH;
+	step_i = (f->min_i - f->max_i) / HEIGHT;
 	y = -1;
+	pi = f->max_i;
 	while (++y < HEIGHT)
 	{
-		x = -1;
-		while (++x < WIDTH)
-		{
-			pr = f->min_r + (double)x * (f->max_r - f->min_r) / WIDTH;
-			pi = f->max_i + (double)y * (f->min_i - f->max_i) / HEIGHT;
-			nb_iter = calculate_fractal(f, pr, pi);
-			set_pixel_color(f, x, y, f->palette[nb_iter]);
-		}
+		render_line(f, y, pi, step_r);
+		pi += step_i;
 	}
 	mlx_put_image_to_window(f->mlx, f->win, f->img, 0, 0);
 }

@@ -62,7 +62,7 @@ void	color_shift(t_fractol *f)
 {
 	int	alt_color;
 
-	f->color_pattern = (f->color_pattern + 1) % 9;
+	f->color_pattern = (f->color_pattern + 1) % NUM_COLOR_PATTERNS;
 	reinit_img(f);
 	if (f->color == 0x000000)
 		alt_color = 0x333333;

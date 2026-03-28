@@ -28,6 +28,12 @@
 
 #include "fractol.h"
 
+static int	pack_rgb(int red, int green, int blue)
+{
+	return ((0xFF << 24) | ((red & 0xFF) << 16)
+		| ((green & 0xFF) << 8) | (blue & 0xFF));
+}
+
 void	set_color_opposites(t_fractol *f, int color)
 {
 	int	i;
@@ -45,7 +51,7 @@ void	set_color_opposites(t_fractol *f, int color)
 		r += i % 0xFF;
 		g += i % 0xFF;
 		b += i % 0xFF;
-		f->palette[i] = 0xFF << 24 | r << 16 | g << 8 | b;
+		f->palette[i] = pack_rgb(r, g, b);
 	}
 	f->palette[MAX_ITERATIONS - 1] = 0;
 }
@@ -70,7 +76,7 @@ void	set_color_contrasted(t_fractol *f, int color)
 			g += i % 0xFF;
 		if (b != 0xFF)
 			b += i % 0xFF;
-		f->palette[i] = 0xFF << 24 | r << 16 | g << 8 | b;
+		f->palette[i] = pack_rgb(r, g, b);
 	}
 	f->palette[MAX_ITERATIONS - 1] = 0;
 }
@@ -99,7 +105,7 @@ void	set_color_graphic(t_fractol *f, int color)
 		rgb[0] -= i % 0xFF;
 		rgb[1] -= i % 0xFF;
 		rgb[2] -= i % 0xFF;
-		f->palette[i] = 0xFF << 24 | rgb[0] << 16 | rgb[1] << 8 | rgb[2];
+		f->palette[i] = pack_rgb(rgb[0], rgb[1], rgb[2]);
 	}
 	f->palette[MAX_ITERATIONS - 1] = 0;
 }

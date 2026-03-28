@@ -22,6 +22,7 @@
 # define WIDTH 900
 # define HEIGHT 900
 # define MAX_ITERATIONS 60
+# define NUM_COLOR_PATTERNS 9
 
 /*  Fractal sets	*/
 # define MANDELBROT 1
@@ -66,7 +67,7 @@ int		julia_shift(int x, int y, t_fractol *f);
 /* Colors	*/
 void	color_shift(t_fractol *f);
 void	set_color_mono(t_fractol *f, int color);
-void	set_color_multiple(t_fractol *f, int colors[4], int n);
+void	set_color_multiple(t_fractol *f, int *colors, int n);
 void	set_color_zebra(t_fractol *f, int color);
 void	set_color_triad(t_fractol *f, int color);
 void	set_color_tetra(t_fractol *f, int color);
@@ -86,7 +87,8 @@ void	init(t_fractol *f);
 void	get_complex_layout(t_fractol *f);
 void	handle_args(t_fractol *f, int ac, char **av);
 void	get_color(t_fractol *f, int ac, char **av);
-double	ft_atof(char *str);
+int		ft_atof(char *str, double *nb);
+int		ft_atox_color(t_fractol *f, char *color);
 
 /*  Utils   */
 int		end_fractol(t_fractol *mlx);

@@ -49,6 +49,8 @@ static void	get_julia_starting_values(t_fractol *f, int ac, char **av)
 	double	kr;
 	double	ki;
 
+	kr = 0;
+	ki = 0;
 	if (f->set != JULIA || ac == 2)
 	{
 		f->kr = -0.766667;
@@ -57,9 +59,8 @@ static void	get_julia_starting_values(t_fractol *f, int ac, char **av)
 	}
 	if (ac == 3)
 		help_msg(f);
-	kr = ft_atof(av[2]);
-	ki = ft_atof(av[3]);
-	if (kr == -42 || ki == -42 || kr > 2.0 || kr < -2.0
+	if (!ft_atof(av[2], &kr) || !ft_atof(av[3], &ki)
+		|| kr > 2.0 || kr < -2.0
 		|| ki > 2.0 || ki < -2.0)
 		help_msg(f);
 	f->kr = kr;
@@ -68,8 +69,6 @@ static void	get_julia_starting_values(t_fractol *f, int ac, char **av)
 
 void	get_color(t_fractol *f, int ac, char **av)
 {
-	int	ft_atox_color(t_fractol *f, char *color);
-
 	if (f->set == JULIA && ac == 5)
 		f->color = ft_atox_color(f, av[4]);
 	else if (f->set != JULIA && ac == 3)

@@ -51,7 +51,8 @@ int	get_percent_color(int color, double percent)
 	trgb[0] = (rgb[0] + percentage) - 256;
 	trgb[1] = (rgb[1] + percentage) - 256;
 	trgb[2] = (rgb[2] + percentage) - 256;
-	return (0xFF << 24 | trgb[0] << 16 | trgb[1] << 8 | trgb[2]);
+	return ((0xFF << 24) | ((trgb[0] & 0xFF) << 16)
+		| ((trgb[1] & 0xFF) << 8) | (trgb[2] & 0xFF));
 }
 
 /* set_color_zebra:
