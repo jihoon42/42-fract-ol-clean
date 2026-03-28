@@ -21,13 +21,13 @@ static double	box_fold(double v)
 	return (v);
 }
 
-static double	ball_fold(double r, double m)
+static double	ball_fold_scale(double radius, double magnitude)
 {
-	if (m < r)
-		m = m / (r * r);
-	else if (m < 1)
-		m = 1 / (m * m);
-	return (m);
+	if (magnitude < radius)
+		return (1.0 / (radius * radius));
+	if (magnitude < 1.0)
+		return (1.0 / (magnitude * magnitude));
+	return (1.0);
 }
 
 int	mandelbox(t_fractol *f, double cr, double ci)
@@ -48,7 +48,7 @@ int	mandelbox(t_fractol *f, double cr, double ci)
 		mag = sqrt(vr * vr + vi * vi);
 		if (mag > 2.0)
 			break ;
-		fold = ball_fold(f->mb_radius, mag);
+		fold = ball_fold_scale(f->mb_radius, mag);
 		vr = vr * f->mb_scale * fold + cr;
 		vi = vi * f->mb_scale * fold + ci;
 		n++;
