@@ -21,13 +21,19 @@
 	The pointer to the allocated memory. NULL if the memory allocation fails.
 */
 
-void	*ft_calloc(size_t count, size_t size)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	void	*r;
+	void	*ptr;
+	size_t	total;
 
-	r = malloc(count * size);
-	if (!r)
+	total = nmemb * size;
+	if (total == 0)
+		return (malloc(0));
+	if (total / nmemb != size)
 		return (NULL);
-	ft_bzero(r, size * count);
-	return (r);
+	ptr = malloc(total);
+	if (!ptr)
+		return (NULL);
+	ft_bzero(ptr, total);
+	return (ptr);
 }

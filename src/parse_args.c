@@ -21,7 +21,7 @@ static int	skip_space_sign_0x(char *color)
 	int	i;
 
 	i = 0;
-	while (ft_isspace(color[i]))
+	while (color[i] == ' ' || (color[i] >= '\t' && color[i] <= '\r'))
 		i++;
 	if (color[i] == '+')
 		i++;
@@ -48,7 +48,9 @@ int	ft_atox_color(t_fractol *f, char *color)
 	i = 0;
 	i = skip_space_sign_0x(color);
 	x = 0;
-	while (color[i] && ft_ishexdigit(color[i]))
+	while (color[i] && (ft_isdigit(color[i])
+			|| (color[i] >= 'A' && color[i] <= 'F')
+			|| (color[i] >= 'a' && color[i] <= 'f')))
 	{
 		if (ft_isdigit(color[i]))
 			n = (n * 16) + (color[i] - '0');
@@ -74,7 +76,7 @@ static int	skip_space_sign(char *str, int *is_neg)
 	int	i;
 
 	i = 0;
-	while (ft_isspace(str[i]))
+	while (str[i] == ' ' || (str[i] >= '\t' && str[i] <= '\r'))
 		i++;
 	if (str[i] == '+' || str[i] == '-')
 	{
@@ -99,7 +101,7 @@ static int	parse_decimal_part(char *str, int i, double *nb, int *has_digit)
 		*has_digit = 1;
 		i++;
 	}
-	while (str[i] && ft_isspace(str[i]))
+	while (str[i] == ' ' || (str[i] >= '\t' && str[i] <= '\r'))
 		i++;
 	return (i);
 }
