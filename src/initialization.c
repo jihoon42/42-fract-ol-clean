@@ -36,6 +36,7 @@ void	clean_init(t_fractol *f)
 	f->color_pattern = -1;
 	f->color = 0;
 	f->line_bytes = 0;
+	f->endian = 0;
 }
 
 /* get_complex_layout:
@@ -98,9 +99,9 @@ static void	init_img(t_fractol *f)
 		clean_exit(msg("image buffer access error.", "", 1), f);
 	if (pixel_bits != 32 || line_bytes < (WIDTH * 4))
 		clean_exit(msg("unsupported image format.", "", 1), f);
-	(void)endian;
 	f->img_buf = img_buf;
 	f->line_bytes = line_bytes;
+	f->endian = endian;
 }
 
 /* reinit_image:

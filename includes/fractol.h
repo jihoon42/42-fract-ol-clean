@@ -51,6 +51,7 @@ typedef struct s_fractol
 	int		color_pattern;
 	int		color;
 	int		line_bytes;
+	int		endian;
 }	t_fractol;
 
 /*  Fractal Sets   */
