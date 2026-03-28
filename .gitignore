@@ -1,0 +1,8 @@
+fractol
+obj/
+libft/*.o
+libft/libft.a
+minilibx-macos/*.o
+minilibx-macos/libmlx.a
+minilibx-linux/*.o
+minilibx-linux/libmlx.a

@@ -14,27 +14,25 @@ NAME = libft.a
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
 AR = ar rcs
-SRC = ft_bzero \
-	ft_calloc \
-	ft_isdigit \
-	ft_putendl_fd \
-	ft_putstr_fd \
-	ft_tolower \
-	ft_toupper
-SRCS = $(addsuffix .c, $(SRC))
-OBJS = $(addsuffix .o, $(SRC))
+SRC = ft_calloc.c \
+	ft_isdigit.c \
+	ft_putendl_fd.c \
+	ft_putstr_fd.c \
+	ft_tolower.c \
+	ft_toupper.c
+OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	@$(AR) $@ $^
+$(NAME): $(OBJ)
+	@$(AR) $(NAME) $(OBJ)
 	@echo "Libft ready."
 
-.c.o: $(SRCS)
-	@$(CC) $(CFLAGS) -c -o $@ $<
+%.o: %.c libft.h
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@rm -f $(OBJS)
+	@rm -f $(OBJ)
 	@echo "Libft: removed .o object files."
 
 fclean: clean
