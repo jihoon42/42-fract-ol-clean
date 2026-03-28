@@ -16,6 +16,8 @@ static int	match_set_name(char *arg, char *str, char c, char n)
 {
 	int	i;
 
+	if (!arg || !arg[0])
+		return (0);
 	i = 0;
 	while (arg[i] && str[i])
 	{
@@ -25,7 +27,9 @@ static int	match_set_name(char *arg, char *str, char c, char n)
 	}
 	if (arg[i] == '\0' && str[i] == '\0')
 		return (1);
-	return (arg[1] == '\0' && (ft_tolower(arg[0]) == c || arg[0] == n));
+	if (arg[1] == '\0' && (ft_tolower(arg[0]) == c || arg[0] == n))
+		return (1);
+	return (0);
 }
 
 static void	get_set(t_fractol *f, char **av)
