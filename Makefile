@@ -28,30 +28,38 @@ INC			=	-I ./includes/\
 					-I ./$(MLX_PATH)
 
 # Sources
-SRC_PATH	=	src/
-	SRC			=	fractol.c \
-					args.c \
-					initialization.c \
-					utils.c \
-					events.c \
-				render.c \
+SRC_PATH	= src/
+CORE_SRC	= fractol.c \
+			initialization.c \
+			utils.c \
+			parse_args.c \
+			fractal_sets/mandelbrot.c \
+			fractal_sets/julia.c \
+			color_schemes/color_interpolated.c
+MANDATORY_SRC = args.c \
+				events.c \
 				color.c \
-				parse_args.c \
 				help_msg.c \
-				fractal_sets/mandelbrot.c \
-				fractal_sets/julia.c \
-				fractal_sets/burning_ship.c \
-				fractal_sets/tricorn.c \
-				fractal_sets/mandelbox.c \
-				color_schemes/color_interpolated.c \
-				color_schemes/color_special.c \
-				color_schemes/color_striped.c
-SRCS		= $(addprefix $(SRC_PATH), $(SRC))
+				render.c
+BONUS_SRC	= args_bonus.c \
+			events_bonus.c \
+			color_bonus.c \
+			help_msg_bonus.c \
+			render_bonus.c \
+			fractal_sets/burning_ship_bonus.c \
+			fractal_sets/tricorn_bonus.c \
+			fractal_sets/mandelbox_bonus.c \
+			color_schemes/color_special_bonus.c \
+			color_schemes/color_striped_bonus.c
 
 # Objects
-OBJ_PATH	= obj/
-OBJ			= $(SRC:.c=.o)
-OBJS		= $(addprefix $(OBJ_PATH), $(OBJ))
+OBJ_PATH		= obj/
+MANDATORY_OBJ	= $(CORE_SRC:.c=.o) $(MANDATORY_SRC:.c=.o)
+BONUS_OBJ		= $(CORE_SRC:.c=.o) $(BONUS_SRC:.c=.o)
+MANDATORY_OBJS	= $(addprefix $(OBJ_PATH), $(MANDATORY_OBJ))
+BONUS_OBJS		= $(addprefix $(OBJ_PATH), $(BONUS_OBJ))
+MANDATORY_MARK	= $(OBJ_PATH).mandatory_build
+BONUS_MARK		= $(OBJ_PATH).bonus_build
 
 all: $(MLX) $(LIBFT) $(NAME)
 
@@ -67,12 +75,23 @@ $(LIBFT):
 	@echo "Making libft..."
 	@$(MAKE) -sC $(LIBFT_PATH)
 
-$(NAME): $(OBJS)
-	@echo "Compiling fractol..."
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(MLX) $(LIBFT) $(INC) $(MLX_FLAGS) -lm
-	@echo "Fractol ready."
+$(NAME): $(MANDATORY_MARK)
 
-bonus: all
+$(MANDATORY_MARK): $(MANDATORY_OBJS)
+	@echo "Compiling fractol..."
+	@$(CC) $(CFLAGS) -o $(NAME) $(MANDATORY_OBJS) $(MLX) $(LIBFT) $(INC) $(MLX_FLAGS) -lm
+	@echo "Fractol ready."
+	@rm -f $(BONUS_MARK)
+	@touch $@
+
+bonus: $(MLX) $(LIBFT) $(BONUS_MARK)
+
+$(BONUS_MARK): $(BONUS_OBJS)
+	@echo "Compiling fractol bonus..."
+	@$(CC) $(CFLAGS) -o $(NAME) $(BONUS_OBJS) $(MLX) $(LIBFT) $(INC) $(MLX_FLAGS) -lm
+	@echo "Fractol bonus ready."
+	@rm -f $(MANDATORY_MARK)
+	@touch $@
 
 clean:
 	@echo "Removing .o object files..."
@@ -87,4 +106,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all re clean fclean
+.PHONY: all bonus re clean fclean

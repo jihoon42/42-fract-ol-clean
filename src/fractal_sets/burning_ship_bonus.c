@@ -1,24 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   burning_ship.c                                     :+:      :+:    :+:   */
+/*   burning_ship_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcombeau <mcombeau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jihkim <jihkim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/08 13:37:25 by mcombeau          #+#    #+#             */
-/*   Updated: 2022/04/18 14:51:46 by mcombeau         ###   ########.fr       */
+/*   Created: 2026/03/28 18:15:00 by jihkim            #+#    #+#             */
+/*   Updated: 2026/03/28 18:15:00 by jihkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-/* burning_ship:
-*	Checks whether a complex number is part of the Burning Ship set or not.
-*	Takes as parameters the real and imaginary coordinates of a point,
-*	converted previously from a pixel's coordinates.
-*	Returns the number of iterations before the number escapes 
-*	the Burning Ship set, which can then be used to determine coloring.
-*/
 int	burning_ship(double cr, double ci)
 {
 	int		n;
@@ -42,10 +35,3 @@ int	burning_ship(double cr, double ci)
 	}
 	return (n);
 }
-/*
-	How it works:
-
-	The Burning Ship fractal is a distortion of the Mandelbrot
-	fractal. It uses the same equation to calculate the set, but
-	uses absolute values of zr and zi at each iteration.
-*/

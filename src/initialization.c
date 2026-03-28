@@ -69,8 +69,8 @@ void	get_complex_layout(t_fractol *f)
 	{
 		f->min_r = -2.0;
 		f->max_r = 1.0;
-		f->max_i = -1.5;
-		f->min_i = f->max_i + (f->max_r - f->min_r) * HEIGHT / WIDTH;
+		f->min_i = -1.5;
+		f->max_i = f->min_i + (f->max_r - f->min_r) * HEIGHT / WIDTH;
 	}
 }
 

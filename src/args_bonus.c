@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   args.c                                             :+:      :+:    :+:   */
+/*   args_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcombeau <mcombeau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jihkim <jihkim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/28 15:30:00 by jihkim            #+#    #+#             */
-/*   Updated: 2026/03/28 15:30:00 by jihkim           ###   ########.fr       */
+/*   Created: 2026/03/28 18:15:00 by jihkim            #+#    #+#             */
+/*   Updated: 2026/03/28 18:15:00 by jihkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,24 @@ static int	type_cmp(char *arg, char *str, char c, char n)
 	return (arg[1] == '\0' && (ft_tolower(arg[0]) == c || arg[0] == n));
 }
 
+static int	is_burning_ship(char *arg)
+{
+	return (type_cmp(arg, "burning_ship", 'b', '3')
+		|| type_cmp(arg, "burningship", 'b', '3'));
+}
+
 static void	get_set(t_fractol *f, char **av)
 {
 	if (type_cmp(av[1], "mandelbrot", 'm', '1'))
 		f->set = MANDELBROT;
 	else if (type_cmp(av[1], "julia", 'j', '2'))
 		f->set = JULIA;
+	else if (is_burning_ship(av[1]))
+		f->set = BURNING_SHIP;
+	else if (type_cmp(av[1], "tricorn", 't', '4'))
+		f->set = TRICORN;
+	else if (type_cmp(av[1], "mandelbox", 'x', '5'))
+		f->set = MANDELBOX;
 	else
 		help_msg(f);
 }

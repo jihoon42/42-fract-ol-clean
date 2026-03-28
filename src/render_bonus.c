@@ -1,29 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render.c                                           :+:      :+:    :+:   */
+/*   render_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcombeau <mcombeau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jihkim <jihkim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/08 16:21:20 by mcombeau          #+#    #+#             */
-/*   Updated: 2022/04/18 14:07:39 by mcombeau         ###   ########.fr       */
+/*   Created: 2026/03/28 18:25:00 by jihkim            #+#    #+#             */
+/*   Updated: 2026/03/28 18:25:00 by jihkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-/* set_pixel_color:
-	Add a color to one pixel of the MLX image map.
-	The MLX image is composed of 32 bits per pixel.
-	Color ints are stored from right to left, here, and are in
-	the form of 0xAARRGGBB. 8 bits encode each color component,
-	Alpha (Transparency), Red, Green and Blue.
-	Bit shifting:
-		- BB >> 0   (0x000000BB)
-		- GG >> 8   (0x0000GG00)
-		- RR >> 16  (0x00RR0000)
-		- AA >> 24  (0xAA000000)
-*/
 static void	set_pixel_color(t_fractol *f, int x, int y, int color)
 {
 	unsigned char	*buf;
@@ -35,15 +23,17 @@ static void	set_pixel_color(t_fractol *f, int x, int y, int color)
 	buf[x * 4 + y * f->line_bytes + 3] = color >> 24;
 }
 
-/* calculate_fractal:
-*	Picks the correct fractal calculation function depending
-*	on the current fractal set.
-*/
 static int	calculate_fractal(t_fractol *f, double pr, double pi)
 {
 	if (f->set == MANDELBROT)
 		return (mandelbrot(pr, pi));
-	return (julia(f, pr, pi));
+	if (f->set == JULIA)
+		return (julia(f, pr, pi));
+	if (f->set == BURNING_SHIP)
+		return (burning_ship(pr, pi));
+	if (f->set == TRICORN)
+		return (tricorn(pr, pi));
+	return (mandelbox(f, pr, pi));
 }
 
 static void	render_line(t_fractol *f, int y, double pi, double step_r)
@@ -61,15 +51,6 @@ static void	render_line(t_fractol *f, int y, double pi, double step_r)
 	}
 }
 
-/* render:
-*	Iterates through each pixel of the window, translates the pixel's
-*	coordinates into a complex number to be able to calculate if that number
-*	is part of the fractal set or not.
-*	The number of iterations that complex number goes through before being
-*	rejected from the fractal set determines which color is applied to the pixel.
-*	Once all pixels have been assessed and added to the MLX image,
-*	this function displays the MLX image to the window.
-*/
 void	render(t_fractol *f)
 {
 	int		y;

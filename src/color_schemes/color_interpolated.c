@@ -64,9 +64,9 @@ void	set_color_mono(t_fractol *f, int color)
 		}
 		color1 = color2;
 		color2 = 0xFFFFFF;
-		i += j;
+			i += j;
 	}
-	f->palette[MAX_ITERATIONS -1] = 0;
+	f->palette[MAX_ITERATIONS] = 0;
 }
 
 /* set_color_multiple:
@@ -89,6 +89,8 @@ void	set_color_multiple(t_fractol *f, int *colors, int n)
 	i = 0;
 	x = 0;
 	segment_len = MAX_ITERATIONS / (n - 1);
+	if (segment_len == 0)
+		segment_len = 1;
 	while (i < MAX_ITERATIONS && x < (n - 1))
 	{
 		j = 0;
@@ -106,5 +108,5 @@ void	set_color_multiple(t_fractol *f, int *colors, int n)
 		f->palette[i] = colors[n - 1];
 		i++;
 	}
-	f->palette[MAX_ITERATIONS - 1] = 0;
+	f->palette[MAX_ITERATIONS] = 0;
 }
