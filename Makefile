@@ -96,7 +96,11 @@ $(BONUS_MARK): $(BONUS_OBJS)
 clean:
 	@echo "Removing .o object files..."
 	@rm -rf $(OBJ_PATH)
-	@$(MAKE) clean -C $(MLX_PATH)
+	@if [ -f $(MLX_PATH)Makefile ]; then \
+		$(MAKE) clean -C $(MLX_PATH); \
+	else \
+		rm -f $(MLX_PATH)*.o $(MLX); \
+	fi
 	@$(MAKE) clean -C $(LIBFT_PATH)
 
 fclean: clean
