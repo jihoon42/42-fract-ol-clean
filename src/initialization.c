@@ -94,6 +94,8 @@ static void	init_img(t_fractol *f)
 	if (!(f->img))
 		clean_exit(msg("image creation error.", "", 1), f);
 	buf = mlx_get_data_addr(f->img, &pixel_bits, &line_bytes, &endian);
+	if (!buf)
+		clean_exit(msg("image buffer access error.", "", 1), f);
 	f->buf = buf;
 	f->line_bytes = line_bytes;
 }
@@ -106,10 +108,11 @@ void	reinit_img(t_fractol *f)
 {
 	if (f->mlx && f->img)
 		mlx_destroy_image(f->mlx, f->img);
+	f->img = NULL;
 	if (f->palette)
 		free(f->palette);
-	if (f->buf)
-		f->buf = NULL;
+	f->palette = NULL;
+	f->buf = NULL;
 	init_img(f);
 }
 

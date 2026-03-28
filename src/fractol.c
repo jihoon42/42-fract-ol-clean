@@ -29,6 +29,7 @@ int	main(int ac, char **av)
 	render(&f);
 	print_controls();
 	mlx_hook(f.win, EVENT_CLOSE_BTN, 0, end_fractol, &f);
+	mlx_expose_hook(f.win, expose_fractol, &f);
 	mlx_key_hook(f.win, key_event, &f);
 	mlx_mouse_hook(f.win, mouse_event, &f);
 	mlx_loop(f.mlx);

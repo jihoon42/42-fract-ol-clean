@@ -92,6 +92,7 @@ int		ft_atox_color(t_fractol *f, char *color);
 
 /*  Utils   */
 int		end_fractol(t_fractol *mlx);
+int		expose_fractol(t_fractol *mlx);
 void	clean_exit(int error_code, t_fractol *f);
 int		msg(char *str1, char *str2, int err_num);
 void	help_msg(t_fractol *f);

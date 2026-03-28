@@ -81,21 +81,30 @@ void	set_color_multiple(t_fractol *f, int *colors, int n)
 	int		i;
 	int		j;
 	int		x;
+	int		segment_len;
 	double	fraction;
 
+	if (n < 2)
+		return ;
 	i = 0;
 	x = 0;
-	while (i < MAX_ITERATIONS)
+	segment_len = MAX_ITERATIONS / (n - 1);
+	while (i < MAX_ITERATIONS && x < (n - 1))
 	{
 		j = 0;
-		while ((i + j) < MAX_ITERATIONS && j < (MAX_ITERATIONS / (n - 1)))
+		while ((i + j) < MAX_ITERATIONS && j < segment_len)
 		{
-			fraction = (double)j / (MAX_ITERATIONS / (n - 1));
+			fraction = (double)j / segment_len;
 			f->palette[i + j] = interpolate(colors[x], colors[x + 1], fraction);
 			j++;
 		}
 		x++;
 		i += j;
+	}
+	while (i < MAX_ITERATIONS)
+	{
+		f->palette[i] = colors[n - 1];
+		i++;
 	}
 	f->palette[MAX_ITERATIONS - 1] = 0;
 }
