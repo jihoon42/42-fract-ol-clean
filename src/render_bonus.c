@@ -58,7 +58,6 @@ void	render(t_fractol *f)
 	double	step_r;
 	double	step_i;
 
-	mlx_clear_window(f->mlx, f->win);
 	step_r = (f->max_r - f->min_r) / WIDTH;
 	step_i = (f->min_i - f->max_i) / HEIGHT;
 	y = -1;

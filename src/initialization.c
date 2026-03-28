@@ -96,6 +96,9 @@ static void	init_img(t_fractol *f)
 	buf = mlx_get_data_addr(f->img, &pixel_bits, &line_bytes, &endian);
 	if (!buf)
 		clean_exit(msg("image buffer access error.", "", 1), f);
+	if (pixel_bits != 32 || line_bytes < (WIDTH * 4))
+		clean_exit(msg("unsupported image format.", "", 1), f);
+	(void)endian;
 	f->buf = buf;
 	f->line_bytes = line_bytes;
 }
