@@ -19,8 +19,8 @@ int	tricorn(double cr, double ci)
 	double	zi;
 	double	tmp;
 
-	zr = cr;
-	zi = ci;
+	zr = 0;
+	zi = 0;
 	n = 0;
 	while (n < MAX_ITERATIONS)
 	{
