@@ -21,7 +21,7 @@ void	clean_init(t_fractol *f)
 	f->mlx = NULL;
 	f->win = NULL;
 	f->img = NULL;
-	f->buf = NULL;
+	f->img_buf = NULL;
 	f->set = -1;
 	f->min_r = 0;
 	f->max_r = 0;
@@ -29,9 +29,9 @@ void	clean_init(t_fractol *f)
 	f->max_i = 0;
 	f->kr = 0;
 	f->ki = 0;
-	f->sx = 0;
-	f->rx = 0;
-	f->fx = 0;
+	f->mb_scale = 0;
+	f->mb_radius = 0;
+	f->mb_fixed = 0;
 	f->palette = NULL;
 	f->color_pattern = -1;
 	f->color = 0;
@@ -85,7 +85,7 @@ static void	init_img(t_fractol *f)
 	int		pixel_bits;
 	int		line_bytes;
 	int		endian;
-	char	*buf;
+	char	*img_buf;
 
 	f->palette = ft_calloc((MAX_ITERATIONS + 1), sizeof(int));
 	if (!(f->palette))
@@ -93,13 +93,13 @@ static void	init_img(t_fractol *f)
 	f->img = mlx_new_image(f->mlx, WIDTH, HEIGHT);
 	if (!(f->img))
 		clean_exit(msg("image creation error.", "", 1), f);
-	buf = mlx_get_data_addr(f->img, &pixel_bits, &line_bytes, &endian);
-	if (!buf)
+	img_buf = mlx_get_data_addr(f->img, &pixel_bits, &line_bytes, &endian);
+	if (!img_buf)
 		clean_exit(msg("image buffer access error.", "", 1), f);
 	if (pixel_bits != 32 || line_bytes < (WIDTH * 4))
 		clean_exit(msg("unsupported image format.", "", 1), f);
 	(void)endian;
-	f->buf = buf;
+	f->img_buf = img_buf;
 	f->line_bytes = line_bytes;
 }
 
@@ -115,7 +115,7 @@ void	reinit_img(t_fractol *f)
 	if (f->palette)
 		free(f->palette);
 	f->palette = NULL;
-	f->buf = NULL;
+	f->img_buf = NULL;
 	init_img(f);
 }
 
@@ -131,9 +131,9 @@ void	init(t_fractol *f)
 	f->win = mlx_new_window(f->mlx, WIDTH, HEIGHT, "Fractol");
 	if (!f->win)
 		clean_exit(msg("MLX: error creating window.", "", 1), f);
-	f->sx = 2.0;
-	f->rx = 0.5;
-	f->fx = 1.0;
+	f->mb_scale = 2.0;
+	f->mb_radius = 0.5;
+	f->mb_fixed = 1.0;
 	get_complex_layout(f);
 	color_shift(f);
 }

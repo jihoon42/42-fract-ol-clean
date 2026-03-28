@@ -14,13 +14,13 @@
 
 static void	set_pixel_color(t_fractol *f, int x, int y, int color)
 {
-	unsigned char	*buf;
+	unsigned char	*pixel_data;
 
-	buf = (unsigned char *)f->buf;
-	buf[x * 4 + y * f->line_bytes] = color;
-	buf[x * 4 + y * f->line_bytes + 1] = color >> 8;
-	buf[x * 4 + y * f->line_bytes + 2] = color >> 16;
-	buf[x * 4 + y * f->line_bytes + 3] = color >> 24;
+	pixel_data = (unsigned char *)f->img_buf;
+	pixel_data[x * 4 + y * f->line_bytes] = color;
+	pixel_data[x * 4 + y * f->line_bytes + 1] = color >> 8;
+	pixel_data[x * 4 + y * f->line_bytes + 2] = color >> 16;
+	pixel_data[x * 4 + y * f->line_bytes + 3] = color >> 24;
 }
 
 static int	calculate_fractal(t_fractol *f, double pr, double pi)

@@ -77,11 +77,3 @@ int	end_fractol(t_fractol *mlx)
 	clean_exit(0, mlx);
 	return (0);
 }
-
-int	expose_fractol(t_fractol *mlx)
-{
-	if (!mlx || !mlx->mlx || !mlx->win || !mlx->img)
-		return (0);
-	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
-	return (0);
-}

@@ -12,23 +12,17 @@
 
 #include "fractol.h"
 
-static void	zoom(t_fractol *f, double factor)
+static void	zoom_view(t_fractol *f, double factor, int x, int y)
 {
-	double	range_r;
-	double	range_i;
-	double	center_r;
-	double	center_i;
+	double	anchor_r;
+	double	anchor_i;
 
-	range_r = f->max_r - f->min_r;
-	range_i = f->max_i - f->min_i;
-	center_r = f->min_r + (range_r / 2.0);
-	center_i = f->min_i + (range_i / 2.0);
-	range_r *= factor;
-	range_i *= factor;
-	f->min_r = center_r - (range_r / 2.0);
-	f->max_r = center_r + (range_r / 2.0);
-	f->min_i = center_i - (range_i / 2.0);
-	f->max_i = center_i + (range_i / 2.0);
+	anchor_r = f->min_r + ((double)x * (f->max_r - f->min_r) / WIDTH);
+	anchor_i = f->max_i + ((double)y * (f->min_i - f->max_i) / HEIGHT);
+	f->min_r = anchor_r + (f->min_r - anchor_r) * factor;
+	f->max_r = anchor_r + (f->max_r - anchor_r) * factor;
+	f->min_i = anchor_i + (f->min_i - anchor_i) * factor;
+	f->max_i = anchor_i + (f->max_i - anchor_i) * factor;
 }
 
 static void	move_view(t_fractol *f, double distance, char direction)
@@ -60,21 +54,6 @@ static void	move_view(t_fractol *f, double distance, char direction)
 	}
 }
 
-static void	zoom_to_position(t_fractol *f, double factor, int x, int y)
-{
-	x -= WIDTH / 2;
-	y -= HEIGHT / 2;
-	zoom(f, factor);
-	if (x < 0)
-		move_view(f, (double)(-x) / WIDTH, 'L');
-	else if (x > 0)
-		move_view(f, (double)x / WIDTH, 'R');
-	if (y < 0)
-		move_view(f, (double)(-y) / HEIGHT, 'U');
-	else if (y > 0)
-		move_view(f, (double)y / HEIGHT, 'D');
-}
-
 static int	switch_fractal(int keycode, t_fractol *f)
 {
 	int	new_set;
@@ -97,40 +76,40 @@ static int	switch_fractal(int keycode, t_fractol *f)
 	return (1);
 }
 
-int	key_event(int keycode, t_fractol *mlx)
+int	key_event(int keycode, t_fractol *f)
 {
 	if (keycode == KEY_ESC)
-		return (end_fractol(mlx));
+		return (end_fractol(f));
 	if (keycode == KEY_PLUS)
-		zoom(mlx, 0.5);
+		zoom_view(f, 0.5, WIDTH / 2, HEIGHT / 2);
 	else if (keycode == KEY_MINUS)
-		zoom(mlx, 2.0);
+		zoom_view(f, 2.0, WIDTH / 2, HEIGHT / 2);
 	else if (keycode == KEY_UP || keycode == KEY_W)
-		move_view(mlx, 0.2, 'U');
+		move_view(f, 0.2, 'U');
 	else if (keycode == KEY_DOWN || keycode == KEY_S)
-		move_view(mlx, 0.2, 'D');
+		move_view(f, 0.2, 'D');
 	else if (keycode == KEY_LEFT || keycode == KEY_A)
-		move_view(mlx, 0.2, 'L');
+		move_view(f, 0.2, 'L');
 	else if (keycode == KEY_RIGHT || keycode == KEY_D)
-		move_view(mlx, 0.2, 'R');
+		move_view(f, 0.2, 'R');
 	else if (keycode == KEY_SPACE)
-		color_shift(mlx);
-	else if (!switch_fractal(keycode, mlx))
+		color_shift(f);
+	else if (!switch_fractal(keycode, f))
 		return (1);
-	render(mlx);
+	render(f);
 	return (0);
 }
 
-int	mouse_event(int keycode, int x, int y, t_fractol *mlx)
+int	mouse_event(int keycode, int x, int y, t_fractol *f)
 {
 	if (keycode == MOUSE_WHEEL_UP)
-		zoom_to_position(mlx, 0.5, x, y);
+		zoom_view(f, 0.5, x, y);
 	else if (keycode == MOUSE_WHEEL_DOWN)
-		zoom_to_position(mlx, 2.0, x, y);
-	else if (keycode == MOUSE_BTN && mlx->set == JULIA)
-		julia_shift(x, y, mlx);
+		zoom_view(f, 2.0, x, y);
+	else if (keycode == MOUSE_BTN && f->set == JULIA)
+		julia_shift(x, y, f);
 	else
 		return (0);
-	render(mlx);
+	render(f);
 	return (0);
 }

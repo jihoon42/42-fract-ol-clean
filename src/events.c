@@ -12,7 +12,7 @@
 
 #include "fractol.h"
 
-static void	zoom(t_fractol *f, double factor)
+static void	zoom_view(t_fractol *f, double factor)
 {
 	double	range_r;
 	double	range_i;
@@ -31,30 +31,30 @@ static void	zoom(t_fractol *f, double factor)
 	f->max_i = center_i + (range_i / 2.0);
 }
 
-int	key_event(int keycode, t_fractol *mlx)
+int	key_event(int keycode, t_fractol *f)
 {
 	if (keycode == KEY_ESC)
-		return (end_fractol(mlx));
+		return (end_fractol(f));
 	if (keycode == KEY_PLUS)
-		zoom(mlx, 0.5);
+		zoom_view(f, 0.5);
 	else if (keycode == KEY_MINUS)
-		zoom(mlx, 2.0);
+		zoom_view(f, 2.0);
 	else
 		return (1);
-	render(mlx);
+	render(f);
 	return (0);
 }
 
-int	mouse_event(int keycode, int x, int y, t_fractol *mlx)
+int	mouse_event(int keycode, int x, int y, t_fractol *f)
 {
 	(void)x;
 	(void)y;
 	if (keycode == MOUSE_WHEEL_UP)
-		zoom(mlx, 0.5);
+		zoom_view(f, 0.5);
 	else if (keycode == MOUSE_WHEEL_DOWN)
-		zoom(mlx, 2.0);
+		zoom_view(f, 2.0);
 	else
 		return (0);
-	render(mlx);
+	render(f);
 	return (0);
 }

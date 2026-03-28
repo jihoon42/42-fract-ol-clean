@@ -36,7 +36,7 @@ typedef struct s_fractol
 	void	*mlx;
 	void	*win;
 	void	*img;
-	char	*buf;
+	char	*img_buf;
 	int		set;
 	double	min_r;
 	double	max_r;
@@ -44,9 +44,9 @@ typedef struct s_fractol
 	double	max_i;
 	double	kr;
 	double	ki;
-	double	sx;
-	double	rx;
-	double	fx;
+	double	mb_scale;
+	double	mb_radius;
+	double	mb_fixed;
 	int		*palette;
 	int		color_pattern;
 	int		color;
@@ -77,8 +77,8 @@ void	set_color_graphic(t_fractol *f, int color);
 int		get_percent_color(int color, double percent);
 
 /*  Events   */
-int		key_event(int keycode, t_fractol *mlx);
-int		mouse_event(int keycode, int x, int y, t_fractol *mlx);
+int		key_event(int keycode, t_fractol *f);
+int		mouse_event(int keycode, int x, int y, t_fractol *f);
 
 /* Initialization */
 void	clean_init(t_fractol *f);
@@ -91,8 +91,8 @@ int		ft_atof(char *str, double *nb);
 int		ft_atox_color(t_fractol *f, char *color);
 
 /*  Utils   */
-int		end_fractol(t_fractol *mlx);
-int		expose_fractol(t_fractol *mlx);
+int		end_fractol(t_fractol *f);
+int		expose_fractol(t_fractol *f);
 void	clean_exit(int error_code, t_fractol *f);
 int		msg(char *str1, char *str2, int err_num);
 void	help_msg(t_fractol *f);

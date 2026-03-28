@@ -37,6 +37,25 @@ static int	interpolate(int startcolor, int endcolor, double fraction)
 	return (0xFF << 24 | start_rgb[0] << 16 | start_rgb[1] << 8 | start_rgb[2]);
 }
 
+static int	get_segment_len(int n)
+{
+	int	segment_len;
+
+	segment_len = MAX_ITERATIONS / (n - 1);
+	if (segment_len == 0)
+		return (1);
+	return (segment_len);
+}
+
+static void	fill_tail(t_fractol *f, int start, int color)
+{
+	while (start < MAX_ITERATIONS)
+	{
+		f->palette[start] = color;
+		start++;
+	}
+}
+
 /* set_color_mono:
 *	Sets a monochromatic color scheme. Colors range from
 *	black to the provided color, to white near the fractal
@@ -64,7 +83,7 @@ void	set_color_mono(t_fractol *f, int color)
 		}
 		color1 = color2;
 		color2 = 0xFFFFFF;
-			i += j;
+		i += j;
 	}
 	f->palette[MAX_ITERATIONS] = 0;
 }
@@ -88,9 +107,7 @@ void	set_color_multiple(t_fractol *f, int *colors, int n)
 		return ;
 	i = 0;
 	x = 0;
-	segment_len = MAX_ITERATIONS / (n - 1);
-	if (segment_len == 0)
-		segment_len = 1;
+	segment_len = get_segment_len(n);
 	while (i < MAX_ITERATIONS && x < (n - 1))
 	{
 		j = 0;
@@ -103,10 +120,6 @@ void	set_color_multiple(t_fractol *f, int *colors, int n)
 		x++;
 		i += j;
 	}
-	while (i < MAX_ITERATIONS)
-	{
-		f->palette[i] = colors[n - 1];
-		i++;
-	}
+	fill_tail(f, i, colors[n - 1]);
 	f->palette[MAX_ITERATIONS] = 0;
 }

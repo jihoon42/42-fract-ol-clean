@@ -43,14 +43,14 @@ int	mandelbox(t_fractol *f, double cr, double ci)
 	n = 0;
 	while (n < MAX_ITERATIONS)
 	{
-		vr = f->fx * box_fold(vr);
-		vi = f->fx * box_fold(vi);
+		vr = f->mb_fixed * box_fold(vr);
+		vi = f->mb_fixed * box_fold(vi);
 		mag = sqrt(vr * vr + vi * vi);
 		if (mag > 2.0)
 			break ;
-		fold = ball_fold(f->rx, mag);
-		vr = vr * f->sx * fold + cr;
-		vi = vi * f->sx * fold + ci;
+		fold = ball_fold(f->mb_radius, mag);
+		vr = vr * f->mb_scale * fold + cr;
+		vi = vi * f->mb_scale * fold + ci;
 		n++;
 	}
 	return (n);

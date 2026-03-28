@@ -12,7 +12,7 @@
 
 #include "fractol.h"
 
-static int	type_cmp(char *arg, char *str, char c, char n)
+static int	match_set_name(char *arg, char *str, char c, char n)
 {
 	int	i;
 
@@ -28,23 +28,18 @@ static int	type_cmp(char *arg, char *str, char c, char n)
 	return (arg[1] == '\0' && (ft_tolower(arg[0]) == c || arg[0] == n));
 }
 
-static int	is_burning_ship(char *arg)
-{
-	return (type_cmp(arg, "burning_ship", 'b', '3')
-		|| type_cmp(arg, "burningship", 'b', '3'));
-}
-
 static void	get_set(t_fractol *f, char **av)
 {
-	if (type_cmp(av[1], "mandelbrot", 'm', '1'))
+	if (match_set_name(av[1], "mandelbrot", 'm', '1'))
 		f->set = MANDELBROT;
-	else if (type_cmp(av[1], "julia", 'j', '2'))
+	else if (match_set_name(av[1], "julia", 'j', '2'))
 		f->set = JULIA;
-	else if (is_burning_ship(av[1]))
+	else if (match_set_name(av[1], "burning_ship", 'b', '3')
+		|| match_set_name(av[1], "burningship", 'b', '3'))
 		f->set = BURNING_SHIP;
-	else if (type_cmp(av[1], "tricorn", 't', '4'))
+	else if (match_set_name(av[1], "tricorn", 't', '4'))
 		f->set = TRICORN;
-	else if (type_cmp(av[1], "mandelbox", 'x', '5'))
+	else if (match_set_name(av[1], "mandelbox", 'x', '5'))
 		f->set = MANDELBOX;
 	else
 		help_msg(f);

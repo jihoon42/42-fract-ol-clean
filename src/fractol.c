@@ -12,6 +12,14 @@
 
 #include "fractol.h"
 
+int	expose_fractol(t_fractol *f)
+{
+	if (!f || !f->mlx || !f->win || !f->img)
+		return (0);
+	mlx_put_image_to_window(f->mlx, f->win, f->img, 0, 0);
+	return (0);
+}
+
 /* main:
 *	Initializes the fractol data structure, prints the program controls,
 *	opens a new window and registers hooks to detect user interactions.

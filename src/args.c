@@ -12,7 +12,7 @@
 
 #include "fractol.h"
 
-static int	type_cmp(char *arg, char *str, char c, char n)
+static int	match_set_name(char *arg, char *str, char c, char n)
 {
 	int	i;
 
@@ -30,9 +30,9 @@ static int	type_cmp(char *arg, char *str, char c, char n)
 
 static void	get_set(t_fractol *f, char **av)
 {
-	if (type_cmp(av[1], "mandelbrot", 'm', '1'))
+	if (match_set_name(av[1], "mandelbrot", 'm', '1'))
 		f->set = MANDELBROT;
-	else if (type_cmp(av[1], "julia", 'j', '2'))
+	else if (match_set_name(av[1], "julia", 'j', '2'))
 		f->set = JULIA;
 	else
 		help_msg(f);

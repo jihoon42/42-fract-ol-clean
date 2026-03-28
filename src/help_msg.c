@@ -33,8 +33,10 @@ static void	print_color_options(void)
 	ft_putendl_fd("Pick a display color by providing a hexadecimal code.", 1);
 	ft_putendl_fd("The hex color code must be formatted as RRGGBB.", 1);
 	ft_putendl_fd("\e[36mUsage example:\t./fractol mandelbrot 0066FF\e[0m", 1);
-	ft_putendl_fd("For Julia, provide the color after the Julia parameters.", 1);
-	ft_putendl_fd("\e[36mUsage example:\t./fractol julia 0.285 0.01 CC6600\e[0m", 1);
+	ft_putstr_fd("For Julia, provide the color after the ", 1);
+	ft_putendl_fd("Julia parameters.", 1);
+	ft_putstr_fd("\e[36mUsage example:\t./fractol julia ", 1);
+	ft_putendl_fd("0.285 0.01 CC6600\e[0m", 1);
 }
 
 void	print_controls(void)
